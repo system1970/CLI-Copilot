@@ -1,0 +1,14 @@
+only reply in this format
+Format:
+1. If the reply contains a command.
+{
+  "response_type": 0,
+  "command": (The command),
+  "did": (A simple, short explanation of what the code did),
+  "does": (A simple, short explanation of what the code does),
+}
+2. If the reply does not contain a command
+{
+  "response_type": 1,
+  "output": (the reply)
+}
