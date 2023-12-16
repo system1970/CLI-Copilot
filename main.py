@@ -58,7 +58,7 @@ for delete and create commands ask for the filename is the filename is not given
         context_list.append(user_input.rstrip())
 
         # Use GPT-3.5 for chat completion
-        completion = chat_with_gpt3(context_list, behavior_string)
+        completion = chat_with_gpt3(context_list, behaviour_string)
 
         try:
             reply_message = json.loads(completion.choices[0].message["content"])
