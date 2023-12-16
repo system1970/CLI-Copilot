@@ -1,5 +1,5 @@
 import os
-import openai
+import openai # type: ignore
 import json
 import platform
 
@@ -48,7 +48,7 @@ def main():
     # Define the system behavior prompt
     # with open("system_behavior_prompt.txt", "r") as f:
     #     behavior_string = f.read()
-    behaviour_string = """You are a chatbot on operating_system that understands and executes command-line operations that gives commands that works on operating_system.
+    behavior_string = """You are a chatbot on operating_system that understands and executes command-line operations that gives commands that works on operating_system.
 for delete and create commands ask for the filename is the filename is not given."""
 
     while True:
@@ -58,12 +58,17 @@ for delete and create commands ask for the filename is the filename is not given
         context_list.append(user_input.rstrip())
 
         # Use GPT-3.5 for chat completion
-        completion = chat_with_gpt3(context_list, behaviour_string)
+        completion = chat_with_gpt3(context_list, behavior_string)
 
+        #Get Message Content
+        message_content = completion.choices[0].message["content"]
         try:
-            reply_message = json.loads(completion.choices[0].message["content"])
+            reply_message = json.loads(message_content)
             print(reply_message)
 
+            # Feed it back it's own message
+            context_list.append(str(reply_message))
+                                
             if int(reply_message["response_type"]) == 0:
                 while True:
                     state = input("Execute Command (Y/N): ")
@@ -90,8 +95,7 @@ for delete and create commands ask for the filename is the filename is not given
             else:
                 print(reply_message["output"])
         except json.JSONDecodeError:
-            reply_message = completion.choices[0].message["content"]
-            print(reply_message)
+            print(message_content)
 
 if __name__ == "__main__":
     main()
